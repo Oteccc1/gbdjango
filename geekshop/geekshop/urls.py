@@ -18,12 +18,16 @@ from xml.etree.ElementInclude import include
 from django.urls import path
 from django.contrib import admin
 import mainapp.views as mainapp
+from django.conf import settings
+from django.conf.urls.static import static
+from django.conf.urls import include
 urlpatterns = [
     path('', mainapp.main, name='index'),
-    path('products/', mainapp.products, name='products'),
+    path('products/', include('mainapp.urls', namespace='products')),
     path('contact/', mainapp.contact, name='contact'),
     path('admin/', admin.site.urls, name='admin'),
     path('products/products_all/', mainapp.products_all),
-
-
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
